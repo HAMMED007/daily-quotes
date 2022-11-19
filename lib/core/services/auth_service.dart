@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import 'package:logger/logger.dart';
+import 'package:on_call_protection/core/models/body/quotes_body.dart';
 
 import '../../locator.dart';
 
@@ -54,9 +55,9 @@ class AuthService {
   doSetup() async {
     isLogin = _localStorageService.accessToken != null;
     if (isLogin) {
-      log.d('User is already logged-in');
+      log.d('>>>>>>>>>>>>>>>>>>>>>.User is already logged-in');
       //await _getUserProfile();
-
+      await _dbService.getData();
     } else {
       log.d('@doSetup: User is not logged-in');
     }

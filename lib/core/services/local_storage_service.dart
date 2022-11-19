@@ -9,16 +9,26 @@ class LocalStorageService {
   ///
   /// List of const keys
   ///
-  static const String onboardingCountKey = 'onBoardingCount';
+
   static const String notificationsCountKey = 'notificationsCount';
+  static const String newRandomQuoteIndexofTheDayKey =
+      'newRandomQuoteIndexofTheDay';
+  static const String lastDateOfTheDayQuoteKey = 'lastDateOfTheDayQuote';
   static const String accessTokenKey = 'accessToken';
   static const String refreshTokenKey = 'refreshToken';
 
   ///
   /// Setters and getters
   ///
-  int get onBoardingPageCount => _getFromDisk(onboardingCountKey) ?? 0;
-  set onBoardingPageCount(int count) => _saveToDisk(onboardingCountKey, count);
+  int get newRandomQuoteIndexofTheDay =>
+      _getFromDisk(newRandomQuoteIndexofTheDayKey) ?? 0;
+  set newRandomQuoteIndexofTheDay(int index) =>
+      _saveToDisk(newRandomQuoteIndexofTheDayKey, index);
+
+  String get lastDateOfTheDayQuote =>
+      _getFromDisk(lastDateOfTheDayQuoteKey) ?? DateTime.now().toString();
+  set lastDateOfTheDayQuote(String date) =>
+      _saveToDisk(lastDateOfTheDayQuoteKey, date);
 
   int get setNotificationsCount => _getFromDisk(notificationsCountKey) ?? 0;
   set setNotificationsCount(int count) =>

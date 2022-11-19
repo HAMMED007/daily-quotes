@@ -24,7 +24,7 @@ class InputValidation extends ChangeNotifier {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
     if (value!.isNotEmpty) {
-      if (regex.hasMatch(value)) {
+      if (regex.hasMatch(value.trim())) {
         return null;
       } else {
         return "Invalid email";
@@ -45,7 +45,7 @@ class InputValidation extends ChangeNotifier {
   String? confirmedPasswordlValidation(String? value) {
     if (value != null && value.length < 8) {
       return "Password should at least 8 char";
-    } else if (value == signUpBody.password) {
+    } else if (value?.trim() == signUpBody.password?.trim()) {
       return null;
     } else {
       return "Password does not match";

@@ -31,140 +31,162 @@ class _HomeScreenState extends State<HomeScreen>
       create: (context) => HomeViewModel(),
       child: Consumer<HomeViewModel>(
         builder: (context, model, child) => Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: model.isFloadButtonActive
+                ? Padding(
+                    padding: EdgeInsets.only(bottom: 100.h),
+                    child: FloatingActionButton(
+                      backgroundColor: Color(0xff2B666B),
+                      onPressed: () {
+                        model.getRadomQuote();
+                      },
+                      child: SvgPicture.asset(
+                        'assets/images/refresh.svg',
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             body: SingleChildScrollView(
-          child: CustomLinearBackground(
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/backgrounddesign.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 35.w, right: 35, top: 80.h),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: model.authService.logout,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/logouticon.svg',
-                            //   height: 40.h,
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Text(
-                            'Logout',
-                            style: kLogoutText,
-                          ),
-                        ],
-                      ),
+              child: CustomLinearBackground(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/backgrounddesign.png"),
+                      fit: BoxFit.cover,
                     ),
-                    SizedBox(
-                      height: 55.h,
-                    ),
-                    DefaultTabController(
-                      length: 2,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.h),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(148, 96, 177, 184),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: ButtonsTabBar(
-                              controller: _tabController,
-                              backgroundColor: Color(0xff567275),
-                              radius: 10.r,
-                              buttonMargin: EdgeInsets.only(
-                                left: 15.w,
-                                right: 15.w,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 35.w, right: 35, top: 80.h),
+                    child: Column(
+                      children: [
+                        logOut(model),
+                        SizedBox(
+                          height: 55.h,
+                        ),
+                        DefaultTabController(
+                          length: 2,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(148, 96, 177, 184),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: ButtonsTabBar(
+                                  onTap: (value) {
+                                    model.updateFloatButton(value);
+                                  },
+                                  controller: _tabController,
+                                  backgroundColor: Color(0xff567275),
+                                  radius: 10.r,
+                                  buttonMargin: EdgeInsets.only(
+                                    left: 15.w,
+                                    right: 15.w,
+                                  ),
+                                  unselectedBackgroundColor: Colors.transparent,
+                                  unselectedLabelStyle:
+                                      TextStyle(color: Colors.white70),
+                                  labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 40.w, vertical: 15.h),
+                                  tabs: [
+                                    Tab(
+                                      text: "Home",
+                                    ),
+                                    Tab(
+                                      text: "Daily Quote",
+                                    ),
+                                  ],
+                                ),
                               ),
-                              unselectedBackgroundColor: Colors.transparent,
-                              unselectedLabelStyle:
-                                  TextStyle(color: Colors.white70),
-                              labelStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 40.w, vertical: 15.h),
-                              tabs: [
-                                Tab(
-                                  text: "Home",
-                                ),
-                                Tab(
-                                  text: "Daily Quote",
-                                ),
-                              ],
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      height: 1.sh - 290.h,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
-                          CustomQuoteContainer(
-                            flag: true,
-                            text: Text(
-                              'Keep away from people who try to belittle your ambitions. Small people always do that, but the really great ones make you feel that you, too, can become great.\n-- Mark Twain--',
-                              style: kQuoteText,
-                            ),
-                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        SizedBox(
+                          height: 1.sh - 290.h,
+                          child: TabBarView(
+                            physics: NeverScrollableScrollPhysics(),
+                            controller: _tabController,
+                            children: <Widget>[
+                              CustomQuoteContainer(
+                                  auther: model.author!,
+                                  model: model,
+                                  text: model.quote!),
 
-                          CustomQuoteContainer(
-                            flag: false,
-                            text: Text(
-                              'Keep away from people who try to belittle your ambitions. Small people always do that, but the really great ones make you feel that you, too, can become great.\n-- Mark Twain--',
-                              style: kQuoteText,
-                            ),
-                          ),
+                              CustomQuoteContainer(
+                                auther: model.authorOfTheDay!,
+                                model: model,
+                                text: model.quoteOfTheDay!,
+                              ),
 
-                          // CustomQuoteContainer(
-                          //   text: Text(
-                          //     'Keep away from people who try to belittle your ambitions. Small people always do that, but the really great ones make you feel that you, too, can become great.\n-- Mark Twain--',
-                          //     style: kQuoteText,
-                          //   ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // ),
-                        ],
-                      ),
+                              // CustomQuoteContainer(
+                              //   text: Text(
+                              //     'Keep away from people who try to belittle your ambitions. Small people always do that, but the really great ones make you feel that you, too, can become great.\n-- Mark Twain--',
+                              //     style: kQuoteText,
+                              //   ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 36.h,
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 36.h,
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        )),
+            )),
       ),
     );
     //     ),
     //   ),
     // );
   }
+
+  InkWell logOut(HomeViewModel model) {
+    return InkWell(
+      onTap: model.authService.logout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SvgPicture.asset(
+            'assets/images/logouticon.svg',
+            //   height: 40.h,
+          ),
+          SizedBox(
+            width: 5.w,
+          ),
+          Text(
+            'Logout',
+            style: kLogoutText,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class CustomQuoteContainer extends StatelessWidget {
   CustomQuoteContainer({
     required this.text,
-    required this.flag,
+    required this.model,
+    required this.auther,
   });
-  final Widget text;
-  final bool flag;
+  final String text;
+
+  final HomeViewModel model;
+  final String auther;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +206,7 @@ class CustomQuoteContainer extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(20.r),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 40.h),
+          padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 20.h),
           child: Column(
             children: [
               Row(
@@ -197,12 +219,23 @@ class CustomQuoteContainer extends StatelessWidget {
                 ],
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 52.h),
-                child: text,
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: Text(
+                  text.length > 2000 ? text.substring(0, 500) + '...' : text,
+                  style: kQuoteText.copyWith(
+                    fontSize: text.length > 600 ? 18.sp : 22.sp,
+                  ),
+                ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text(
+                    auther.length > 25 ? text.substring(0, 23) + '...' : auther,
+                    style: kQuoteText.copyWith(
+                      fontSize: 16.sp,
+                    ),
+                  ),
                   SvgPicture.asset(
                     'assets/images/rightquote.svg',
                     fit: BoxFit.scaleDown,
@@ -215,14 +248,6 @@ class CustomQuoteContainer extends StatelessWidget {
         SizedBox(
           height: 36.h,
         ),
-        if (flag == true)
-          FloatingActionButton(
-            backgroundColor: Color(0xff2B666B),
-            onPressed: () {},
-            child: SvgPicture.asset(
-              'assets/images/refresh.svg',
-            ),
-          )
       ],
     );
   }

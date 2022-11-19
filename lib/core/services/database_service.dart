@@ -1,70 +1,42 @@
-import '../../locator.dart';
-import '../constants/api_end_points.dart';
-import '../models/body/login_body.dart';
-import '../models/body/reset_password_body.dart';
-import '../models/body/signup_body.dart';
-import '../models/responses/auth_response.dart';
-import '../models/responses/base_responses/base_response.dart';
-import '../models/responses/base_responses/request_response.dart';
-import '../models/responses/onboarding_response.dart';
-import '../models/responses/user_profile_response.dart';
-import 'api_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+import '../models/body/quotes_body.dart';
+import '../others/logger_customizations/custom_logger.dart';
 
 class DatabaseService {
-  final ApiServices _apiServices = locator<ApiServices>();
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  static final Logger log = CustomLogger(className: 'DATABASE SERVICE');
+  List<QuotesBody> quotesList = [];
 
-  Future<UserProfileResponse> getUserProfile() async {
-    final RequestResponse response =
-        await _apiServices.get(endPoint: EndPoints.userProfile);
-    return UserProfileResponse.fromJson(response.data);
-  }
+  getData() async {
+    final _db = FirebaseFirestore.instance;
 
-  Future<OnboardingResponse> getOnboardingData() async {
-    final RequestResponse response =
-        await _apiServices.get(endPoint: EndPoints.onboardingData);
-    return OnboardingResponse.fromJson(response.data);
-  }
+    try {
+      final snapshot = await _db.collection('Data').doc('quotes').get();
 
-  Future<BaseResponse> updateFcmToken(String deviceId, String token) async {
-    final RequestResponse response = await _apiServices.post(
-      endPoint: EndPoints.fcmToken,
-      data: {
-        'device_id': deviceId,
-        'token': token,
-      },
-    );
-    return BaseResponse.fromJson(response.data);
-  }
+      List data = snapshot.data()?['quotesList'];
+      log.d(data.toString());
 
-  Future<BaseResponse> clearFcmToken(String deviceId) async {
-    final RequestResponse response = await _apiServices.post(
-      endPoint: EndPoints.clearFcmToken,
-      data: {'device_id': deviceId},
-    );
-    return BaseResponse.fromJson(response.data);
-  }
+      // data.forEach((element) {
+      //   quotesList.add(QuotesBody.fromJson(element));
+      // });
+      // log.d(quotesList.first.quote);
+      // log.d(quotesList.first.author);
+      for (int i = 0; i < data.length; i++) {
+        List quote = data[i].toString().split('--');
+        if (quote.length > 1) {
+          quotesList.add(QuotesBody(quote: quote[0], author: '--' + quote[1]));
+        }
+      }
 
-  Future<AuthResponse> loginWithEmailAndPassword(LoginBody body) async {
-    final RequestResponse response = await _apiServices.post(
-      endPoint: EndPoints.login,
-      data: body.toJson(),
-    );
-    return AuthResponse.fromJson(response.data);
-  }
-
-  Future<AuthResponse> createAccount(SignUpBody body) async {
-    final RequestResponse response = await _apiServices.post(
-      endPoint: EndPoints.signUp,
-      data: body.toJson(),
-    );
-    return AuthResponse.fromJson(response.data);
-  }
-
-  Future<AuthResponse> resetPassword(ResetPasswordBody body) async {
-    final RequestResponse response = await _apiServices.post(
-      endPoint: EndPoints.resetPassword,
-      data: body.toJson(),
-    );
-    return AuthResponse.fromJson(response.data);
+      log.d('===========================[${data.length}');
+      log.d(data.last);
+      log.d('===========================[${quotesList.length}');
+      log.d(quotesList.last.quote);
+      log.d(quotesList.last.author);
+    } catch (e, s) {
+      log.d('Exception @DatabaseService/getUserGeneralProfile');
+      log.d(s.toString());
+    }
   }
 }
