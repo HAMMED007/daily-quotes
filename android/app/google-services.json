@@ -37,6 +37,13 @@
             {
               "client_id": "826156698717-gvhpg3f7p0nm1ts30rhji455rjtj151d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "826156698717-m1a3pqru6uhgb5vacrgp3et8trhnl1vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quoteGenerator"
+              }
             }
           ]
         }

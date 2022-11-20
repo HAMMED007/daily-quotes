@@ -35,7 +35,7 @@ class HomeViewModel extends BaseViewModel {
   }
   //
 
-  getRadomQuote() {
+  getRadomQuote() async {
     int randomNumber = Random().nextInt(databaseService.quotesList.length - 1);
     log.i('>>>>>>>>>>>>> $randomNumber');
     quote = databaseService.quotesList[randomNumber].quote;
@@ -43,7 +43,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getQuoteOfTheDay() {
+  getQuoteOfTheDay() async {
     log.i(DateTime.now().toString());
     DateTime date1 = DateTime.parse(localStorageService.lastDateOfTheDayQuote);
     Duration difference = DateTime.now().difference(date1);

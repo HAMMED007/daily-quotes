@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       designSize: Size(430, 932),
       builder: (context, child) {
         return GetMaterialApp(
+          debugShowMaterialGrid: false,
           title: title,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

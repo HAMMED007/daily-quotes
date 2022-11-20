@@ -71,6 +71,7 @@ class AuthService {
         user!.getIdToken().then((value) {
           _localStorageService.accessToken = value;
         });
+        await _dbService.getData();
 
         return AuthResult(status: true);
       } else {
@@ -93,7 +94,7 @@ class AuthService {
             _localStorageService.accessToken = value;
           });
         }
-
+        await _dbService.getData();
         return AuthResult(status: true);
       } else {
         return AuthResult(status: false, error: 'Login failed');
