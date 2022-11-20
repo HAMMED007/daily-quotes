@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'core/services/localization_service.dart';
 import 'ui/screens/splash_screen.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key, required this.title}) : super(key: key);
   final String title;
-  const MyApp({required this.title, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: (context, widget) => GetMaterialApp(
-        translations: LocalizationService(),
-        locale: const Locale("en"),
-        title: title,
-        home: const SplashScreen(),
-      ),
+      designSize: Size(430, 932),
+      builder: (context, child) {
+        return GetMaterialApp(
+          title: title,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: SplashScreen(),
+        );
+      },
     );
   }
 }

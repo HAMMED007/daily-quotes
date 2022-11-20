@@ -231,7 +231,7 @@ class CustomQuoteContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    auther.length > 25 ? text.substring(0, 23) + '...' : auther,
+                    auther.length > 25 ? text.substring(0, 20) + '...' : auther,
                     style: kQuoteText.copyWith(
                       fontSize: 16.sp,
                     ),

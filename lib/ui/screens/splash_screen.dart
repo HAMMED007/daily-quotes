@@ -7,7 +7,6 @@ import 'package:logger/logger.dart';
 import 'package:on_call_protection/core/constants/styles.dart';
 import 'package:on_call_protection/ui/screens/auth_signup/sign_up/sign_up_screen.dart';
 import 'package:on_call_protection/ui/screens/home_screens/home_screen.dart';
-import '../../core/models/other_models/onboarding.dart';
 import '../../core/others/logger_customizations/custom_logger.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/services/local_storage_service.dart';
@@ -24,8 +23,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final _authService = locator<AuthService>();
   final _localStorageService = locator<LocalStorageService>();
-  // final _notificationService = locator<NotificationsService>();
-  List<Onboarding> onboardingList = [];
+
   final Logger log = CustomLogger(className: 'Splash Screen');
 
   @override
@@ -48,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     await _authService.doSetup();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     //
     ///checking if the user is login or not

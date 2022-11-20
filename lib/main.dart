@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_call_protection/ui/screens/splash_screen.dart';
+import 'app.dart';
 import 'core/enums/env.dart';
 import 'core/others/logger_customizations/custom_logger.dart';
 import 'firebase_options.dart';
@@ -28,31 +29,3 @@ Future<void> main() async {
     log.e("$e");
   }
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.title}) : super(key: key);
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(430, 932),
-      builder: (context, child) {
-        return GetMaterialApp(
-          title: title,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          home: SplashScreen(),
-        );
-      },
-    );
-  }
-}
-
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   final log = Logger();
-//   await Firebase.initializeApp();
-//   log.d("Handling a background message: ${message.messageId}");
-// }

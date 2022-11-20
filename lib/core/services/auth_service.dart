@@ -3,14 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import 'package:logger/logger.dart';
-import 'package:on_call_protection/core/models/body/quotes_body.dart';
 
 import '../../locator.dart';
 
 import '../../ui/screens/auth_signup/sign_up/sign_up_screen.dart';
 import '../models/body/login_body.dart';
 import '../models/body/signup_body.dart';
-import '../models/other_models/user_profile.dart';
 
 import '../models/responses/auth_result.dart';
 import '../others/logger_customizations/custom_logger.dart';
@@ -39,7 +37,7 @@ class AuthService {
   late bool isLogin;
   final _localStorageService = locator<LocalStorageService>();
   final _dbService = locator<DatabaseService>();
-  UserProfile? userProfile;
+
   String? fcmToken;
   static final Logger log = CustomLogger(className: 'AuthService');
   final auth = FirebaseAuth.instance;
@@ -120,7 +118,6 @@ class AuthService {
     try {
       await FirebaseAuth.instance.signOut();
       isLogin = false;
-      userProfile = null;
 
       _localStorageService.accessToken = null;
       Get.offAll(() => SignUpScreen());

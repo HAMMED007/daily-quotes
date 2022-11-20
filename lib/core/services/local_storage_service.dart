@@ -26,7 +26,7 @@ class LocalStorageService {
       _saveToDisk(newRandomQuoteIndexofTheDayKey, index);
 
   String get lastDateOfTheDayQuote =>
-      _getFromDisk(lastDateOfTheDayQuoteKey) ?? DateTime.now().toString();
+      _getFromDisk(lastDateOfTheDayQuoteKey) ?? '2022-11-19 12:42:27.612519';
   set lastDateOfTheDayQuote(String date) =>
       _saveToDisk(lastDateOfTheDayQuoteKey, date);
 
